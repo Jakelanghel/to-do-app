@@ -11,47 +11,61 @@
     <title>to-do-app</title>
 </head>
 <body>
-    <div class="background-1">
-        <img class="background-img" src="images/bg-desktop-dark.jpg" alt="front door of a business">
-    </div>
-
-    <div class="container-absolute">
-        <div class="container-flex-col column-1" id="col-1">
-            <div class="container-flex">
-                <h1 class="title">to do</h1>
-                <button class="theme-btn"><img src="images/icon-sun.svg" alt="change theme button" class="theme-selector"></button>
-            </div>
-
-            <div class="new-to-do container-flex">
-                <input type="checkbox" class="checkbox" id="checkbox-element" />
-                <label for="checkbox-element" class="checkbox-label">
-                    <span class="indicator"></span>
-                </label>
-                <input type="text" class="to-do-input" id="new-to-do-input" placeholder="Enter new to do!">
-            </div>
+    <main>
+        <div class="background-1">
+            <img src="images/bg-mobile-dark.jpg" alt="a store front" class="background-img">
         </div>
-
-        <div class="container-flex-col column-2" id="col-2">
-            
-        </div>
-
-        <div class="to-do-actions container-flex">
-            <div class="items">
-                <p class="items-count"><span>0</span> items left</p>
-            </div>
-            <div class="actions-toggel">
-                <p><span class="action">all</span> 
-                    <span class="action action-center">active</span> 
-                    <span class="action">completed</span>
-                </p>
-            </div>
-            <div class="clear-completed">
-                <p><span>clear completed</span></p>
-            </div>
-
-        </div>
-    </div>
     
-<script src="js/index.js"></script>
+        <div class="container-todo flex-col">
+            <div class="header flex-space-between">
+                <h1 class="title">to do</h1>
+                <button class="theme-btn"><img src="images/icon-sun.svg" alt="Change dark and light mode"></button>
+            </div>
+    
+            <form action=""  data-new-task-form>
+                <input type="checkbox" class="checkbox" id="checkbox-element">
+                <label for="checkbox-element" class="checkbox-label">
+                <span class="indicator"><span class="hover-element"></span></span>
+                </label>
+                <input type="text" class="todo" data-new-task-input aria-label="Ceate new task input">
+            </form>
+
+            <div class="tasks-container" data-task-container>
+                 
+            </div>
+    
+            <div class="mobile-actions">
+                <div class="mobile-actions-col-1">
+                    <div class="incomplete-task-count">
+                        <p class="task-count">0 items left</p>
+                    </div>
+    
+                    <div class="clear-completed">
+                        <p>clear completed</p>
+                    </div>
+                </div>
+                
+                <div class="mobile-actions-col-2">
+                    <p>all</p>
+                    <p class="center-action">active</p>
+                    <p>completed</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Drag and drop to reorder list</p>
+            </div>
+        </div>
+    </main>
+    
+    <template id="task-template">
+        <input type="checkbox" class="checkbox">
+            <label for="checkbox-element" class="checkbox-label">
+            <span class="indicator"><span class="hover-element"></span></span>
+            </label>
+            <label class="todo" ></label>
+    </template>
+    
+    <script src="scripts/toDo.js"></script>
 </body>
 </html>

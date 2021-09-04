@@ -11,15 +11,20 @@
     <title>to-do-app</title>
 </head>
 <body>
+    <div class="background-desktop">
+        <img data-desktop-bg-img src="images/bg-desktop-dark.jpg" alt="a store front" class="background-img">
+    </div>
     <main>
-        <div class="background-1">
-            <img src="images/bg-mobile-dark.jpg" alt="a store front" class="background-img">
+        <div class="background-mobile">
+            <img data-mobile-bg-img src="images/bg-mobile-dark.jpg" alt="a store front" class="background-img">
         </div>
     
         <div class="container-todo flex-col">
             <div class="header flex-space-between">
                 <h1 class="title">to do</h1>
-                <button class="theme-btn"><img src="images/icon-sun.svg" alt="Change dark and light mode"></button>
+                <button class="theme-btn" data-btn-change-theme>
+                    <img data-change-theme-icon src="images/icon-sun.svg" alt="Change dark and light mode">
+                </button>
             </div>
     
             <form action=""  data-new-task-form>
@@ -34,38 +39,53 @@
                  
             </div>
     
-            <div class="mobile-actions">
-                <div class="mobile-actions-col-1">
+            <div class="actions" data-actions>
+                <div class="actions-col-1">
                     <div class="incomplete-task-count">
                         <p class="task-count">0 items left</p>
                     </div>
+
+                    <div class="actions-col-2-desktop"> <!-- Hide this div in mobile view-->
+                        <button class="btn" data-btn-show-all>all</button>
+                        <button class="btn center-action" data-btn-show-active>active</button>
+                        <button class="btn" data-btn-show-complete>completed</button>
+                    </div>
     
                     <div class="clear-completed">
-                        <p>clear completed</p>
+                        <button class="btn-clear" data-btn-clear-complete>clear completed</button>
                     </div>
+
                 </div>
                 
-                <div class="mobile-actions-col-2">
-                    <p>all</p>
-                    <p class="center-action">active</p>
-                    <p>completed</p>
+                <div class="actions-col-2-mobile"> <!-- Hide this div in desktop view-->
+                    <button class="btn" data-btn-show-all>all</button>
+                    <button class="btn center-action" data-btn-show-active>active</button>
+                    <button class="btn" data-btn-show-complete>completed</button>
                 </div>
-            </div>
 
-            <div class="footer">
-                <p>Drag and drop to reorder list</p>
+                <p class="footer">Drag and drop to reorder list</p>
+
             </div>
         </div>
     </main>
     
     <template id="task-template">
-        <input type="checkbox" class="checkbox">
+        <div class="new-task-container">
+            <input type="checkbox" class="checkbox">
             <label for="checkbox-element" class="checkbox-label">
-            <span class="indicator"><span class="hover-element"></span></span>
+            <span class="indicator" onclick="taskComplete(this)"><span class="hover-element"></span></span>
             </label>
-            <label class="todo" ></label>
+            <label class="todo todo-task">
+                <img class="clear-task" data-btn-clear-task 
+                src="images/icon-cross.svg" alt="remove task btn"
+                onclick="clearTask(this)">
+            </label>
+        </div>
+        
+            
     </template>
     
     <script src="scripts/toDo.js"></script>
+    <script src="scripts/themes.js"></script>
 </body>
 </html>

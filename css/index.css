@@ -1,21 +1,34 @@
 :root {
-    --dark-background: hsl(235, 21%, 11%);
+    --background: hsl(235, 21%, 11%);
     --to-do-text-finished: hsl(233, 14%, 35%);
     --to-do-background: hsl(235, 24%, 19%);
-    --light-gery-text: hsl(234, 39%, 85%);
-    --whiteish-text: hsl(236, 33%, 92%);
+    --todo-text: hsl(234, 39%, 85%);
+    --btn-hover: hsl(236, 33%, 92%);
     --actions-text: hsl(233, 14%, 35%);
     --check-background: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    --accent-text-color: hsl(220, 98%, 61%);
 }
 
 body {
     margin: 0;
     padding: 0;
-    background: var(--dark-background);
+    background: var(--background);
     font-family: 'Josefin Sans', sans-serif;
-    color: var(--whiteish-text);
-    font-size: 18px;
+    letter-spacing: 1px;
 
+    /* font-size: 18px; */
+
+}
+
+*,
+*::before,
+*::after {
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.background-desktop {
+    display: none;
 }
 
 h1,
@@ -40,9 +53,6 @@ main {
     align-content: center;
 }
 
-.background-img {
-    object-fit: fill;
-}
 
 .container-todo {
     width: 90%;
@@ -55,6 +65,7 @@ main {
 }
 
 .title {
+    color: hsl(236, 33%, 92%);
     text-transform: uppercase;
     letter-spacing: 10px;
 }
@@ -70,25 +81,38 @@ main {
 /* =======================*/
 
 .todo {
-    width: 84%;
+    width: 100%;
     display: block;
-    font-family: inherit;
     font-size: inherit;
-    color: var(--light-gery-text);
+    text-transform: capitalize;
+    color: var(--todo-text);
     background: var(--to-do-background);
-    padding: .75em 0 .75em 3em;
+    padding: 1em 0 1em 3.5em;
     border: none;
     border-radius: 5px;
     outline: none;
 
 }
 
+
+
 /* =======================*/
 /* TASKS =================*/
 /* =======================*/
 
 .tasks-container {
-    margin-top: 2em;
+    display: none;
+    margin-top: 1em;
+    border: solid .5px var(--to-do-background);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.todo-task {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid var(--actions-text) 1px;
+    border-radius: 0;
 }
 
 /* =======================*/
@@ -110,7 +134,7 @@ main {
 [type="checkbox"] + .checkbox-label .indicator{
     position: absolute;
     left: 15px;
-    top: 11px;
+    top: 15px;
     /* transform: translateY(-50%); */
     display: block;
     width: 20px;
@@ -121,9 +145,17 @@ main {
     cursor: pointer;
 }
 
+/* Change top position for firefox not sure why but the positon isnt the same as chrome */
+@-moz-document url-prefix() {
+    [type="checkbox"] + .checkbox-label .indicator {
+        top: 25px;
+    }
+}
+
 .checkbox:checked + label .indicator{
     background-image: var(--check-background);
 }
+
 
 .checkbox:checked + .checkbox-label .indicator::after{
     content: "";
@@ -138,35 +170,84 @@ main {
     top: 4px;
 }
 
+.checked {
+    text-decoration: line-through;
+    color: var(--to-do-text-finished);
+}
 
 /* =======================*/
 /* MOBILE-ACTIONS ========*/
 /* =======================*/
 
-.mobile-actions {
-    font-size: 1rem;
+.actions {
     text-transform: capitalize;
     color: var(--actions-text);
-    margin-top: 1em;
+    display: none;
 }
 
-.mobile-actions-col-1 {
+.btn {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    border: none;
+    outline: none;
     background: var(--to-do-background);
-    width: 90%;
+    text-transform: capitalize;
+}
+
+.clear-task {
+    padding-right: 1em;
+}
+
+.btn:hover {
+    color: var(--btn-hover);
+    cursor: pointer;
+}
+
+.btn:focus {
+    color: var(--accent-text-color);
+}
+
+.btn-active {
+    color: var(--accent-text-color);
+}
+
+.btn-clear {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    border: none;
+    outline: none;
+    background: var(--to-do-background);
+    text-transform: capitalize;
+}
+
+.btn-clear:hover {
+    color: var(--btn-hover);
+}
+
+.actions-col-1 {
+    background: var(--to-do-background);
     padding: 1em;
     display: flex;
     justify-content: space-between;
-    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
-.mobile-actions-col-2 {
+.actions-col-2-mobile {
     background: var(--to-do-background);
-    width: 90%;
     padding: 1em;
     margin-top: 1em;
     display: flex;
     justify-content: center;
     border-radius: 5px;
+}
+
+.actions-col-2-desktop {
+    display: none;
 }
 
 .center-action {
@@ -181,24 +262,48 @@ main {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (min-width:1440px) {
 
+    .background-mobile {
+        display: none;
+    }
 
+    .background-desktop {
+        display: block;
+    }
 
+    .actions-col-2-mobile {
+        display: none;
+    }
+
+    .actions-col-2-desktop {
+        display: block;
+    }
+
+    .background-img {
+        width: 100%;
+        height: 250px;
+        object-fit:fill;
+    }
+    
+
+    main {
+        max-width: 700px;
+    }
+
+    .container-todo {
+        max-width: 700px;
+    }
+
+    .clear-task {
+        opacity: 0;
+    }
+
+    .todo-task:hover  .clear-task {
+        opacity: 1;
+    }
+
+  
     /* Hover element positioned in center of span 
     to block out most of backgorund color on hover 
     giving the appearance of a graident border*/
@@ -206,16 +311,21 @@ main {
     .checkbox + .checkbox-label .indicator:hover,
     .checkbox + .checkbox-label .indicator:focus {
         background: var(--check-background);
-        }
+    }
+
+    .checkbox:checked + .checkbox-label .indicator:hover .hover-element, 
+    .checkbox:checked + .checkbox-label .indicator:focus .hover-element {
+        display: none;
+    }
 
     .checkbox + .checkbox-label .indicator:hover .hover-element {
         position: absolute;
-        left: 1px;
+        left: 2px;
         top: 50%;
         transform: translateY(-50%);
         display: block;
-        width: 18px;
-        height: 18px;
+        width: 12px;
+        height: 12px;
         background: var(--to-do-background);
         border-radius: 50%;
         /* border: px solid var(--to-do-text-finished); */

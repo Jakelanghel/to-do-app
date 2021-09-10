@@ -8,7 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-    <title>to-do-app</title>
+    <link rel="shortcut icon" type="image/jpg" href="images/favicon-32x32.png"/>
+
+    <title>To do app</title>
 </head>
 <body>
     <div class="background-desktop">
@@ -32,7 +34,7 @@
                 <label for="checkbox-element" class="checkbox-label">
                 <span class="indicator"><span class="hover-element"></span></span>
                 </label>
-                <input type="text" class="todo" data-new-task-input aria-label="Ceate new task input">
+                <input type="text" class="task" data-new-task-input aria-label="Ceate new task input">
             </form>
 
             <div class="tasks-container" data-task-container>
@@ -42,25 +44,25 @@
             <div class="actions" data-actions>
                 <div class="actions-col-1">
                     <div class="incomplete-task-count">
-                        <p class="task-count">0 items left</p>
+                        <p class="task-count" data-task-count></p>
                     </div>
 
                     <div class="actions-col-2-desktop"> <!-- Hide this div in mobile view-->
-                        <button class="btn" data-btn-show-all>all</button>
-                        <button class="btn center-action" data-btn-show-active>active</button>
-                        <button class="btn" data-btn-show-complete>completed</button>
+                        <button class="btn">all</button>
+                        <button class="btn center-action">active</button>
+                        <button class="btn">completed</button>
                     </div>
     
                     <div class="clear-completed">
-                        <button class="btn-clear" data-btn-clear-complete>clear completed</button>
+                        <button class="btn btn-clear">clear completed</button>
                     </div>
 
                 </div>
                 
                 <div class="actions-col-2-mobile"> <!-- Hide this div in desktop view-->
-                    <button class="btn" data-btn-show-all>all</button>
-                    <button class="btn center-action" data-btn-show-active>active</button>
-                    <button class="btn" data-btn-show-complete>completed</button>
+                    <button class="btn">all</button>
+                    <button class="btn center-action">active</button>
+                    <button class="btn">completed</button>
                 </div>
 
                 <p class="footer">Drag and drop to reorder list</p>
@@ -70,12 +72,12 @@
     </main>
     
     <template id="task-template">
-        <div class="new-task-container">
-            <input type="checkbox" class="checkbox">
+        <div class="todo-container draggable">
+            <input type="checkbox" class="checkbox" onclick="completeTask(this)">
             <label for="checkbox-element" class="checkbox-label">
-            <span class="indicator" onclick="taskComplete(this)"><span class="hover-element"></span></span>
+            <span class="indicator" ><span class="hover-element"></span></span>
             </label>
-            <label class="todo todo-task">
+            <label class="task task-container" draggable="true">
                 <img class="clear-task" data-btn-clear-task 
                 src="images/icon-cross.svg" alt="remove task btn"
                 onclick="clearTask(this)">
@@ -84,8 +86,11 @@
         
             
     </template>
-    
     <script src="scripts/toDo.js"></script>
+    <script src="scripts/render.js"></script>
+    <script src="scripts/actions.js"></script>
+    <script src="scripts/dragAndDrop.js"></script>
     <script src="scripts/themes.js"></script>
+    <script src="scripts/events.js"></script>
 </body>
 </html>

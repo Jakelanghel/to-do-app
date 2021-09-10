@@ -1,146 +1,92 @@
-const newTaskForm = document.querySelector("[data-new-task-form]")
-const newTaskInput = document.querySelector("[data-new-task-input]")
-const taskContainer = document.querySelector("[data-task-container]")
-const mobileActions = document.querySelector("[data-actions]")
-const taskTemplate = document.getElementById("task-template")
-const btnShowAll = document.querySelector("[data-btn-show-all]")
-const btnShowActive = document.querySelector("[data-btn-show-active]")
-const btnShowComplete = document.querySelector("[data-btn-show-complete]")
-const btnClearComplete = document.querySelector("[data-btn-clear-complete]")
-const btnClearTask = document.querySelector("[data-btn-clear-task]")
-const checkboxes = document.querySelectorAll(".indicator")
-const backgroundImg = document.querySelector(".background-img")
+class Todo {
 
-const tasks = []
-
-
-newTaskForm.addEventListener("submit", e => {
-    e.preventDefault()
-    const newTask = newTaskInput.value
-    if(newTask == null || newTask === "") return
-    const task = createTask(newTask)
-    newTaskInput.value = null
-    renderTask(task)
-
-})
-
-btnClearComplete.addEventListener("click", () =>{
-    clearCompletedTasks()
-})
-
-btnShowAll.addEventListener("click", () => {
-    renderAllTasks()
-})
-
-btnShowActive.addEventListener("click", () => {
-    renderActiveTasks()
-})
-
-btnShowComplete.addEventListener("click", () => {
-    renderCompletedTasks()
-})
-
-function taskComplete(btn) {
-    const checkbox = document.getElementById(btn.id)
-    if(!checkbox.checked) {
-        tasks.forEach(task => {
-            if(task.id === btn.id) {
-                task.complete = true 
-                const completedTask = document.getElementById(task.name)
-                completedTask.classList.add("checked")
-            }
-        })
-    }else {
-        tasks.forEach(task => {
-            if(task.id === btn.id) {
-                task.complete = false 
-                const completedTask = document.getElementById(task.name)
-                completedTask.classList.remove("checked")
-            }
-        })
+    constructor() {
+        this.task = null
+        this.taskTemplate = null
+        this.taskElement = null
+        this.taskContainer = null
+        this.checkbox = null
+        this.indicator = null
+        this.label = null
+        this.taskContainer = null
+        this.tasks = null
+        this.ClearTaskBtn = null
     }
-}
 
-function createTask(newTask) {
-    const task = {id: Date.now().toString(), name: newTask, complete: false}
-    tasks.push(task)
-    return task
-}
+    setIds(task) {
+        // Grab task template for adding a new task
+        this.taskTemplate = document.getElementById("task-template")
+        // Set taskElement to equal content of task template
+        this.taskElement = document.importNode(this.taskTemplate.content, true) 
+        // Grab each part of taskElement 
+        this.toDoContainer = this.taskElement.querySelector(".todo-container") 
+        this.checkbox = this.taskElement.querySelector("input")
+        this.indicator = this.taskElement.querySelector(".indicator")
+        this.label = this.taskElement.querySelector(".checkbox-label")
+        this.taskContainer = this.taskElement.querySelector(".task-container")
+        this.ClearTaskBtn = this.taskElement.querySelector(".clear-task")
+        // Set ID's so that checkbox is functional
+        this.checkbox.id = task.id 
+        this.indicator.id = task.id
+        this.label.htmlFor = task.id
+        // Giv clearTaskBtn same Id as its task so we know wat task to clear when clicked
+        this.ClearTaskBtn.id = task.id
+        // Give toDoContainer a unique ID so it can be easily grabbed later on
+        this.toDoContainer.id =  task.id.substring(9, task.id.length - 1) 
+        // Give taskContainer a unique ID so it can be easliy grabbed later on
+        this.taskContainer.id = task.name
+        // Prepend task.name instead of append so flex space between will seperated checkbox and X button
+        this.taskContainer.prepend(task.name) 
+        return this.taskElement
+    }
 
-function renderTask(task) {
-    const taskElement = document.importNode(taskTemplate.content, true) // Store html template as variable
-    const newTask = taskElement.querySelector(".new-task-container") // Grab new task container
-    let newTaskId = task.id.substring(9, task.id.length - 1) // Create unique ID for task container 
-    newTask.id = newTaskId 
-    const checkbox = taskElement.querySelector("input")
-    checkbox.id = task.id // Grab all parts of custom checkbox and give ID 
-    const indicator = taskElement.querySelector(".indicator")
-    indicator.id = task.id
-    const todoContainer = taskElement.querySelector(".todo-task")
-    todoContainer.id = task.name
-    const label = taskElement.querySelector(".checkbox-label")
-    label.htmlFor = task.id
-    const taskLabel = taskElement.querySelector(".todo")
-    const clearTaskBtn = taskElement.querySelector(".clear-task")
-    clearTaskBtn.id = task.id
-    taskLabel.prepend(task.name) // Prepend label instead of append so flex space between will seperated checkbox and X button
-    taskContainer.appendChild(taskElement) // Append new task element to task container
-    taskContainer.style.display = "block"
-    mobileActions.style.display= "block"; // Display mobile actions
-}
-
-function clearTask(clearBtn) {
-    tasks.forEach(task => {
-        if(clearBtn.id === task.id) {
-            const taskIndex = tasks.indexOf(task)
-            tasks.splice(taskIndex, taskIndex + 1)
-            console.log(tasks)
-            let taskId = task.id.substring(9, task.id.length - 1)
-            document.getElementById(taskId).style.display = "none"
-        }
-    })
-}
-
-function clearCompletedTasks() {
-    tasks.forEach(task => {
-        if(task.complete) {
-            const completedIndex = tasks.indexOf(task)
-            tasks.splice(completedIndex, completedIndex + 1)
-            console.log(tasks)
-            let taskId = task.id.substring(9, task.id.length - 1)
-            document.getElementById(taskId).style.display = "none"
-        }
-    })
-}
-
-function renderAllTasks() {
-    tasks.forEach(task => {
-        const taskId = task.id.substring(9, task.id.length - 1)
-        document.getElementById(taskId).style.display = ""
-    })
-}
-
-function renderActiveTasks() {
-    tasks.forEach(task => {
-        let taskId = task.id.substring(9, task.id.length - 1)
-
-        if(task.complete) {
-            document.getElementById(taskId).style.display = "none"
+    createTask(userInput) {
+        // Create new task OBJ with unique ID, task name and completed state
+        this.task = {id: Date.now().toString(), name: userInput, complete: false} 
+        //push new task to tasks array
+        tasks.push(this.task) 
+        return this.task
+    }
+    
+    completeTask(checkbox) {
+        // Update tasks.complete value when checkBox is clicked
+        // Grab checkbox element using Id of checkbox that has been clicked
+        this.checkbox = document.getElementById(checkbox.id)
+        // Check to see if checkBox is being checked or unchecked
+        if(this.checkbox.checked) {
+            //If checkbox has been checked update task.checked to true
+            tasks.filter((task) => {
+                if(task.id === this.checkbox.id) {
+                    task.complete = true
+                }
+            })
         }else {
-            document.getElementById(taskId).style.display = ""
+            tasks.filter((task) => {
+                if(task.id === this.checkbox.id) {
+                    task.complete = false
+                }
+            })
         }
-    })
-}
+    }
 
-function renderCompletedTasks() {
-    tasks.forEach(task => {
-        let taskId = task.id.substring(9, task.id.length - 1)
+    clearCompleted() {
+        // Use filter() method to return new list only containg tasks that are not complete
+        this.tasks = tasks.filter((task) => {
+            return !task.complete
+        })
+        // Update tasks list
+        tasks = this.tasks
+    }
 
-        if(!task.complete) {
-            document.getElementById(taskId).style.display = "none"
-        }else {
-            document.getElementById(taskId).style.display = ""
-        }
-    })
+    removeTask(btn) {
+        this.tasks = tasks.filter((task) => {
+            // Return all tasks that do not have the same ID as the task being cleared
+            if(task.id !== btn.id) {
+                return task
+            }
+        })
+        // update Tasks list 
+        tasks = this.tasks
+    }
 }
 

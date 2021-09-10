@@ -53,12 +53,11 @@ main {
     align-content: center;
 }
 
-
 .container-todo {
     width: 90%;
-    max-width: 375px;
+    max-width: 340px;
     position: absolute;
-    top: 8%;
+    top: 10%;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -80,7 +79,7 @@ main {
 /* TODO ==================*/
 /* =======================*/
 
-.todo {
+.task {
     width: 100%;
     display: block;
     font-size: inherit;
@@ -108,11 +107,16 @@ main {
     border-top-right-radius: 5px;
 }
 
-.todo-task {
+.task-container{
     display: flex;
     justify-content: space-between;
     border-bottom: solid var(--actions-text) 1px;
     border-radius: 0;
+}
+
+.dragging {
+    border: solid 1px var(--accent-text-color);
+    border-radius: 5px;;
 }
 
 /* =======================*/
@@ -299,7 +303,7 @@ main {
         opacity: 0;
     }
 
-    .todo-task:hover  .clear-task {
+    .task-container:hover  .clear-task {
         opacity: 1;
     }
 

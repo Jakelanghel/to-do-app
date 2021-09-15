@@ -1,6 +1,7 @@
-class Actions {
+class ToDoActions {
     constructor() {
         this.taskId = null
+        this.btnClicked = null
     }
 
     showAll() {
@@ -14,7 +15,7 @@ class Actions {
     }
 
     showActive() {
-        tasks.filter((task) => {
+        tasks.forEach((task) => {
             // Get taskContainer ID  of current task ---previously set as unique ID in todo.setIds()
             this.taskId = task.id.substring(9, task.id.length -1)
             if(task.complete) {
@@ -28,7 +29,7 @@ class Actions {
     }
 
     showComplete() {
-        tasks.filter((task) => {
+        tasks.forEach((task) => {
             this.taskId = task.id.substring(9, task.id.length -1)
             if(task.complete) {
                 document.getElementById(this.taskId).style.display = ""
@@ -38,7 +39,14 @@ class Actions {
         })
     }
 
-    clearComplete() {
+    clearCompleted() {
+        // Use filter() method to return new array only contanineg tasks that are not complete
+        tasks = tasks.filter((task) => {
+            return !task.complete
+        })
+    }
+
+    removeComplete() {
         tasks.filter((task) => {
             if(task.complete) {
                 // Get taskContainer ID  ---previously set as unique ID in todo.setIds()
@@ -50,7 +58,7 @@ class Actions {
     }
 
     showTasks(e) {
-        const buttonClicked = e.target.innerText
+        this.btnClicked = e.target.innerText
         
         switch(e.target.innerText) {
             // check e.target.innertext to see what actions btn was pressed
@@ -67,10 +75,10 @@ class Actions {
             break
 
             case "Clear Completed":
-                this.clearComplete()
+                this.removeComplete()
+                this.clearCompleted()
+                render.hideActions()
             break
         }
     }
-
-   
 }

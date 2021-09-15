@@ -1,31 +1,22 @@
 const taskForm = document.querySelector("[data-new-task-form]")
 const taskInput = document.querySelector("[data-new-task-input]")
-const actionsBtns = document.querySelectorAll(".btn")
-const tasksContainer = document.querySelector("[data-task-container]")
+const toDoBtns = document.querySelectorAll(".btn")
 const btnChangeTheme = document.querySelector("[data-btn-change-theme]")
-// Set tasks to and empty array
+
+
 let tasks = []
-// Create new instance of each class
-todo = new Todo
-render = new Render
-actions = new Actions
-dragAndDrop = new DragAndDrop
-themes = new Themes
+let taskCounter = 0
+let taskCount = 0
+
+
+const render = new Render
+const taskActions = new TaskActions
+const toDoActions = new ToDoActions
+const dragAndDrop = new DragAndDrop
+const themes = new Themes
 
 // Check for users prefered color scheme
 themes.getPreferedTheme()
-
-// Add event listner to each actions btn
-for(let btn of actionsBtns) {
-    btn.addEventListener("click", e => {
-        // Run actions.showTasks() each time a actions btn is clicked
-        actions.showTasks(e)
-        if(e.target.innerText === "Clear Completed") {
-            todo.clearCompleted()
-            render.hideActions()
-        }
-    })
-}
 
 // Add event listener to btnChangeTheme
 btnChangeTheme.addEventListener("click", () => {
@@ -33,27 +24,43 @@ btnChangeTheme.addEventListener("click", () => {
     themes.changeTheme()
 })
 
-// Add event listner to task form
-taskForm.addEventListener("submit", e => {
-    //Prevent browser from refreshing
-    e.preventDefault() 
-    // Store user input in variable 
-    const userInput = taskInput.value 
-     // Check for valid input
-    if( userInput == null || userInput === "" ) return
-    // Add new task to tasks array
-    const task = todo.createTask(userInput)
-    // Create new taskElement usind html Template
-    const taskElement = todo.setIds(task)
-    // Render new task to page
-    render.task(taskElement)
-    // Add drag events to new task
-    dragAndDrop.addDragEvents()
-    // Update task count
-    render.updateTaskCount()
-    // Clear new task input
-    render.clearInput()
+// Add event listeners to each todo actions btn
+toDoBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        toDoActions.showTasks(e)
+    })
 })
+
+
+taskForm.addEventListener("submit", (e) => {
+    e.preventDefault()
+    if(taskInput.value !== "" && taskInput.value !== null) {
+        // Create new task OBJ
+        const task = new Task(taskInput.value)
+        // Push new task OBJ to tasks array
+        tasks.push(task)
+        // Create new instance of todo class
+        const todo = new ToDo
+        // Add event listeners to checkbox and clear task btn
+        todo.addEvents()
+        // Call set Ids method on new todo OBJ and store the returned value (new task element) in a variable
+        newToDo = todo.setIds(task)
+        // Render new todo element to page
+        render.task(newToDo)
+        // render taskCount
+        render.taskCount()
+        // Add drag events to new task
+        dragAndDrop.addDragEvents()
+        // clear task input
+        taskInput.value = null
+    }
+    
+    
+})
+
+
+// ============== //
+// DRAG AND DROP //
 
 tasksContainer.addEventListener("dragover", (e) => {
     // Get element that is directly after element being dragged
@@ -69,19 +76,38 @@ tasksContainer.addEventListener("dragover", (e) => {
     }
 })
 
+// DRAG AND DROP FOR MOBILE
+tasksContainer.addEventListener("touchmove", (e) => {
+    // Capture touch array within event so we can access touch.pageY coordinates
+    const touch = e.touches[0]
+    // Get element that is directly after element being dragged
+    const afterElement = dragAndDrop.getDragAfterElem(tasksContainer, touch.pageY)
+    // Get current element being dragged
+    const draggable = document.querySelector(".dragging")
+    if(afterElement == null) {
+        // If element is being dragged bellow container append it to bottom of container
+        tasksContainer.appendChild(draggable)
+    }else {
+        // If afterElement is not null insert dragging element before after element
+        tasksContainer.insertBefore(draggable, afterElement)
+    }
+})
 
+function clearTask(e) {
+    taskActions.removeTask(e)
+    render.removeTask(e)
+    render.taskCount()
 
-// ONCLICK FUNCTIONS -- 
-
-function clearTask(btn) {
-    todo.removeTask(btn)
-    render.removeTask(btn)
-    render.updateTaskCount()
-    render.hideActions()
 }
 
-function completeTask(checkbox) {
-    todo.completeTask(checkbox)
-    render.completeTask(checkbox)
-    render.updateTaskCount()
+function completeTask(e) {
+    // Make this its own method
+     const task = tasks.find(task => {
+         if(task.id === e.target.id) {
+            return task
+         }
+     })
+     taskActions.completeTask(task)
+     render.taskComplete()
+     render.taskCount()
 }

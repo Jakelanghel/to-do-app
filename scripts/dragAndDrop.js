@@ -1,28 +1,37 @@
 class DragAndDrop {
     constructor() {
-
+        this.draggables = null
+        this.draggableElements = null
     }
 
     addDragEvents() {
         // Add drag start event listner to each task
-        const draggables = document.querySelectorAll(".draggable")
-        draggables.forEach(draggable => {
+        this.draggables = document.querySelectorAll(".draggable")
+        this.draggables.forEach(draggable => {
             draggable.addEventListener("dragstart", () => {
                 draggable.classList.add("dragging")
             })
+            draggable.addEventListener("touchstart", () => {
+                draggable.classList.add("dragging")
+            })
         })
+
         // Add drag end event listner to each task
-        draggables.forEach(draggable => {
+        this.draggables.forEach(draggable => {
             draggable.addEventListener("dragend", () => {
                 draggable.classList.remove("dragging")
             })
+            draggable.addEventListener("touchend", () => {
+                draggable.classList.remove("dragging")
+            })
         })
+
     }
 
     getDragAfterElem(tasksContainer, y) {
-        const draggableElements = [...tasksContainer.querySelectorAll(".draggable:not(.dragging)")]
+        this.draggableElements = [...tasksContainer.querySelectorAll(".draggable:not(.dragging)")]
     
-        return draggableElements.reduce((closest, child) => {
+        return this.draggableElements.reduce((closest, child) => {
             // Determin elements position on screen in realtion to mouse
             const box = child.getBoundingClientRect()
             // get offset or distance from center of box being dragged over to our mouse

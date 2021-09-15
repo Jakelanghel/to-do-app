@@ -1,19 +1,8 @@
-class Todo {
+//CREATE NEW TODO ELEMENT
+
+class ToDo {
 
     constructor() {
-        this.task = null
-        this.taskTemplate = null
-        this.taskElement = null
-        this.taskContainer = null
-        this.checkbox = null
-        this.indicator = null
-        this.label = null
-        this.taskContainer = null
-        this.tasks = null
-        this.ClearTaskBtn = null
-    }
-
-    setIds(task) {
         // Grab task template for adding a new task
         this.taskTemplate = document.getElementById("task-template")
         // Set taskElement to equal content of task template
@@ -25,9 +14,13 @@ class Todo {
         this.label = this.taskElement.querySelector(".checkbox-label")
         this.taskContainer = this.taskElement.querySelector(".task-container")
         this.ClearTaskBtn = this.taskElement.querySelector(".clear-task")
+        
+    }
+    // Method for setting IDs on each task element being created
+    setIds(task) {
         // Set ID's so that checkbox is functional
         this.checkbox.id = task.id 
-        this.indicator.id = task.id
+        // this.indicator.id = task.id
         this.label.htmlFor = task.id
         // Giv clearTaskBtn same Id as its task so we know wat task to clear when clicked
         this.ClearTaskBtn.id = task.id
@@ -40,53 +33,11 @@ class Todo {
         return this.taskElement
     }
 
-    createTask(userInput) {
-        // Create new task OBJ with unique ID, task name and completed state
-        this.task = {id: Date.now().toString(), name: userInput, complete: false} 
-        //push new task to tasks array
-        tasks.push(this.task) 
-        return this.task
-    }
-    
-    completeTask(checkbox) {
-        // Update tasks.complete value when checkBox is clicked
-        // Grab checkbox element using Id of checkbox that has been clicked
-        this.checkbox = document.getElementById(checkbox.id)
-        // Check to see if checkBox is being checked or unchecked
-        if(this.checkbox.checked) {
-            //If checkbox has been checked update task.checked to true
-            tasks.filter((task) => {
-                if(task.id === this.checkbox.id) {
-                    task.complete = true
-                }
-            })
-        }else {
-            tasks.filter((task) => {
-                if(task.id === this.checkbox.id) {
-                    task.complete = false
-                }
-            })
-        }
-    }
-
-    clearCompleted() {
-        // Use filter() method to return new list only containg tasks that are not complete
-        this.tasks = tasks.filter((task) => {
-            return !task.complete
-        })
-        // Update tasks list
-        tasks = this.tasks
-    }
-
-    removeTask(btn) {
-        this.tasks = tasks.filter((task) => {
-            // Return all tasks that do not have the same ID as the task being cleared
-            if(task.id !== btn.id) {
-                return task
-            }
-        })
-        // update Tasks list 
-        tasks = this.tasks
+    // Method for adding event listeners to clear task btn and checkbox
+    addEvents(e) {
+        this.ClearTaskBtn.addEventListener("click", clearTask)
+        this.checkbox.addEventListener("click", completeTask)
     }
 }
+
 

@@ -71,26 +71,27 @@
         </div>
     </main>
     
-    <template id="task-template">
-        <div class="todo-container draggable">
-            <input type="checkbox" class="checkbox" onclick="completeTask(this)">
-            <label for="checkbox-element" class="checkbox-label">
-            <span class="indicator" ><span class="hover-element"></span></span>
-            </label>
-            <label class="task task-container" draggable="true">
-                <img class="clear-task" data-btn-clear-task 
-                src="images/icon-cross.svg" alt="remove task btn"
-                onclick="clearTask(this)">
-            </label>
-        </div>
+<template id="task-template">
+    <div class="todo-container draggable">
+        <input type="checkbox" class="checkbox">
+        <label for="checkbox-element" class="checkbox-label">
+        <span class="indicator" ><span class="hover-element"></span></span>
+        </label>
+        <label class="task task-container" draggable="true">
+            <img class="clear-task" data-btn-clear-task 
+            src="images/icon-cross.svg" alt="remove task btn">
+        </label>
+    </div>
+    
         
-            
-    </template>
-    <script src="scripts/toDo.js"></script>
-    <script src="scripts/render.js"></script>
-    <script src="scripts/actions.js"></script>
-    <script src="scripts/dragAndDrop.js"></script>
-    <script src="scripts/themes.js"></script>
-    <script src="scripts/events.js"></script>
+</template>
+<script src="scripts/task.js"></script>
+<script src="scripts/toDo.js"></script>
+<script src="scripts/render.js"></script>
+<script src="scripts/taskActions.js"></script>
+<script src="scripts/toDoActions.js"></script>
+<script src="scripts/dragAndDrop.js"></script>
+<script src="scripts/themes.js"></script>
+<script src="scripts/events.js"></script>
 </body>
 </html>

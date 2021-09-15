@@ -83,7 +83,6 @@ main {
     width: 100%;
     display: block;
     font-size: inherit;
-    text-transform: capitalize;
     color: var(--todo-text);
     background: var(--to-do-background);
     padding: 1em 0 1em 3.5em;
